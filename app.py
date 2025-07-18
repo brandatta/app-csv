@@ -57,7 +57,6 @@ st.markdown("""
         background-color: #f6fff0;
         color: #64352c !important;
         font-weight: bold;
-        border-left: none;
     }
     label, .stSelectbox label, .stFileUploader label {
         color: #64352c !important;
@@ -99,7 +98,7 @@ if uploaded_file:
     if numeric_cols:
         selected_col = st.selectbox("Seleccioná una columna para ver la suma:", numeric_cols)
         suma = df[selected_col].sum()
-        st.info(f"Suma de la columna **{selected_col}**: **{suma:.2f}**")
+        st.markdown(f"<div class='stAlert' data-baseweb='alert'>Suma de la columna <strong>{selected_col}</strong>: <strong>{suma:.2f}</strong></div>", unsafe_allow_html=True)
     else:
         st.warning("No hay columnas numéricas.")
 
@@ -133,6 +132,12 @@ if uploaded_file:
             conn.commit()
             cursor.close()
             conn.close()
+            os.remove(temp_csv.name)
+
+            st.success("Archivo subido, tabla actualizada y procedimiento ejecutado.")
+
+        except Exception as e:
+            st.error(f"Error: {e}")
             os.remove(temp_csv.name)
 
             st.success("Archivo subido, tabla actualizada y procedimiento ejecutado.")
