@@ -21,7 +21,7 @@ def get_base64_logo(path="logorelleno.png"):
 
 logo_b64 = get_base64_logo()
 
-# Estilos personalizados con color verde actualizado (#d4fdb7)
+# Estilos personalizados
 st.markdown("""
     <style>
     .main > div:first-child {
@@ -39,6 +39,7 @@ st.markdown("""
         font-size: 24px;
         font-weight: bold;
         color: #d4fdb7;
+        text-shadow: -1px -1px 0 #64352c, 1px -1px 0 #64352c, -1px 1px 0 #64352c, 1px 1px 0 #64352c;
     }
     .header-logo img {
         height: 40px;
