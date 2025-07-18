@@ -21,7 +21,7 @@ def get_base64_logo(path="logorelleno.png"):
 
 logo_b64 = get_base64_logo()
 
-# Estilos personalizados
+# Estilos personalizados con verde exacto del logo
 st.markdown("""
     <style>
     .main > div:first-child {
@@ -32,30 +32,29 @@ st.markdown("""
         justify-content: space-between;
         align-items: center;
         padding: 2px 0 10px 0;
-        border-bottom: 2px solid #6AB04C;
+        border-bottom: 2px solid #A5C536;
         margin-bottom: 20px;
     }
     .header-title {
         font-size: 24px;
         font-weight: bold;
-        color: #6AB04C;
+        color: #A5C536;
     }
     .header-logo img {
         height: 40px;
     }
-    /* Botón principal en verde */
     button[kind="primary"] {
-        background-color: #6AB04C !important;
-        border-color: #6AB04C !important;
+        background-color: #A5C536 !important;
+        border-color: #A5C536 !important;
+        color: black !important;
     }
     button[kind="primary"]:hover {
-        background-color: #5CA23F !important;
-        border-color: #5CA23F !important;
+        background-color: #94b130 !important;
+        border-color: #94b130 !important;
     }
-    /* Info box en verde */
     .stAlert[data-baseweb="alert"] {
-        border-left: 6px solid #6AB04C;
-        background-color: #f6fff4;
+        border-left: 6px solid #A5C536;
+        background-color: #f7fbe9;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -119,7 +118,7 @@ if uploaded_file:
             LOAD DATA LOCAL INFILE '{temp_csv.name.replace('\\\\', '\\\\')}'
             INTO TABLE test_infile_abi
             FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-            LINES TERMINATED BY '\\n'
+            LINES TERMINATED BY '\n'
             IGNORE 1 ROWS;
             """
             cursor.execute(load_query)
