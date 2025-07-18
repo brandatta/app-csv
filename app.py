@@ -4,7 +4,7 @@ import mysql.connector
 import tempfile
 import os
 
-st.set_page_config(page_title="Subida CSV ABI", layout="centered")
+st.set_page_config(page_title="Subida CSV", layout="centered")
 st.title("Subida de CSV")
 
 # Ocultar texto original del uploader y mostrar texto personalizado
