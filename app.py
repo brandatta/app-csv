@@ -21,7 +21,7 @@ def get_base64_logo(path="logorelleno.png"):
 
 logo_b64 = get_base64_logo()
 
-# Estilos personalizados con verde exacto del logo
+# Estilos personalizados con color verde actualizado (#d4fdb7)
 st.markdown("""
     <style>
     .main > div:first-child {
@@ -32,29 +32,29 @@ st.markdown("""
         justify-content: space-between;
         align-items: center;
         padding: 2px 0 10px 0;
-        border-bottom: 2px solid #A5C536;
+        border-bottom: 2px solid #d4fdb7;
         margin-bottom: 20px;
     }
     .header-title {
         font-size: 24px;
         font-weight: bold;
-        color: #A5C536;
+        color: #d4fdb7;
     }
     .header-logo img {
         height: 40px;
     }
     button[kind="primary"] {
-        background-color: #A5C536 !important;
-        border-color: #A5C536 !important;
+        background-color: #d4fdb7 !important;
+        border-color: #d4fdb7 !important;
         color: black !important;
     }
     button[kind="primary"]:hover {
-        background-color: #94b130 !important;
-        border-color: #94b130 !important;
+        background-color: #c1e6a8 !important;
+        border-color: #c1e6a8 !important;
     }
     .stAlert[data-baseweb="alert"] {
-        border-left: 6px solid #A5C536;
-        background-color: #f7fbe9;
+        border-left: 6px solid #d4fdb7;
+        background-color: #f6fff0;
     }
     </style>
 """, unsafe_allow_html=True)
