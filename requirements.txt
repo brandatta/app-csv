@@ -2,3 +2,7 @@ streamlit
 pandas
 mysql-connector-python
 openpyxl
+tempfile
+os
+base64
+io
