@@ -58,6 +58,9 @@ st.markdown("""
         color: #64352c !important;
         font-weight: bold;
     }
+    .stAlert[data-baseweb="alert"] .stMarkdown p {
+        color: #64352c !important;
+    }
     label, .stSelectbox label, .stFileUploader label {
         color: #64352c !important;
     }
@@ -98,7 +101,7 @@ if uploaded_file:
     if numeric_cols:
         selected_col = st.selectbox("Seleccioná una columna para ver la suma:", numeric_cols)
         suma = df[selected_col].sum()
-        st.info(f"Suma de la columna **{selected_col}**: **{suma:.2f}**")
+        st.markdown(f"<div class='stAlert' data-baseweb='alert'><div class='stMarkdown'><p>Suma de la columna <strong>{selected_col}</strong>: <strong>{suma:.2f}</strong></p></div></div>", unsafe_allow_html=True)
     else:
         st.warning("No hay columnas numéricas.")
 
