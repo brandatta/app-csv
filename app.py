@@ -5,7 +5,7 @@ import tempfile
 import os
 
 st.set_page_config(page_title="Subida CSV ABI", layout="centered")
-st.title("Subida de CSV para ABI")
+st.title("Subida de CSV")
 
 uploaded_file = st.file_uploader("Subí tu archivo CSV", type=["csv", "xlsx"])
 
