@@ -7,61 +7,10 @@ import os
 st.set_page_config(page_title="Subida CSV ABI", layout="centered")
 st.title("Subida de CSV")
 
-# HTML + CSS + JS para uploader en español
-st.markdown("""
-<style>
-/* Oculta el uploader de Streamlit completamente */
-div[data-testid="stFileUploader"] {
-    display: none;
-}
-/* Estilo botón en español */
-#custom-uploader {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    margin-bottom: 1rem;
-}
-#file-label {
-    background-color: #2185d0;
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-}
-#file-label:hover {
-    background-color: #1678c2;
-}
-#file-input {
-    display: none;
-}
-</style>
-
-<div id="custom-uploader">
-    <label id="file-label" for="file-input">Elegir archivo</label>
-    <input type="file" id="file-input" accept=".csv,.xlsx" />
-</div>
-
-<script>
-const fileInput = window.parent.document.querySelector('input[type=file]');
-const customInput = window.parent.document.getElementById('file-input');
-if (fileInput && customInput) {
-    customInput.addEventListener('change', () => {
-        const file = customInput.files[0];
-        const dataTransfer = new DataTransfer();
-        dataTransfer.items.add(file);
-        fileInput.files = dataTransfer.files;
-        const event = new Event('change', { bubbles: true });
-        fileInput.dispatchEvent(event);
-    });
-}
-</script>
-""", unsafe_allow_html=True)
-
-# Uploader oculto pero funcional
-uploaded_file = st.file_uploader("", type=["csv", "xlsx"], label_visibility="collapsed")
+uploaded_file = st.file_uploader("Subí tu archivo CSV", type=["csv", "xlsx"])
 
 if uploaded_file:
+    # Leer archivo
     if uploaded_file.name.endswith(".csv"):
         df = pd.read_csv(uploaded_file)
     elif uploaded_file.name.endswith(".xlsx"):
@@ -80,10 +29,12 @@ if uploaded_file:
 
     if st.button("Confirmar Subida"):
         try:
+            # Guardar archivo temporal
             temp_csv = tempfile.NamedTemporaryFile(delete=False, suffix=".csv", mode='w', encoding='utf-8')
             df.to_csv(temp_csv.name, index=False)
             temp_csv.close()
 
+            # Conexión
             conn = mysql.connector.connect(
                 host=st.secrets["DB_HOST"],
                 user=st.secrets["DB_USER"],
@@ -93,8 +44,10 @@ if uploaded_file:
             )
             cursor = conn.cursor()
 
+            # TRUNCATE tabla destino
             cursor.execute("TRUNCATE TABLE test_infile_abi")
 
+            # Cargar CSV con LOAD DATA
             load_query = f"""
             LOAD DATA LOCAL INFILE '{temp_csv.name.replace('\\\\', '\\\\')}'
             INTO TABLE test_infile_abi
@@ -104,6 +57,7 @@ if uploaded_file:
             """
             cursor.execute(load_query)
 
+            # Ejecutar SP
             cursor.execute("CALL update_ep()")
 
             conn.commit()
@@ -112,5 +66,6 @@ if uploaded_file:
             os.remove(temp_csv.name)
 
             st.success("Archivo subido, tabla actualizada y procedimiento ejecutado.")
+
         except Exception as e:
             st.error(f"Error: {e}")
