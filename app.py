@@ -39,7 +39,6 @@ st.markdown("""
         font-size: 24px;
         font-weight: bold;
         color: #d4fdb7;
-        text-shadow: -1px -1px 0 #64352c, 1px -1px 0 #64352c, -1px 1px 0 #64352c, 1px 1px 0 #64352c;
     }
     .header-logo img {
         height: 40px;
@@ -56,6 +55,10 @@ st.markdown("""
     .stAlert[data-baseweb="alert"] {
         border-left: 6px solid #d4fdb7;
         background-color: #f6fff0;
+        color: black;
+    }
+    label, .stSelectbox label, .stFileUploader label {
+        color: #d4fdb7 !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -116,7 +119,7 @@ if uploaded_file:
             cursor.execute("TRUNCATE TABLE test_infile_abi")
 
             load_query = f"""
-            LOAD DATA LOCAL INFILE '{temp_csv.name.replace('\\\\', '\\\\')}'
+            LOAD DATA LOCAL INFILE '{temp_csv.name.replace('\\', '\\')}'
             INTO TABLE test_infile_abi
             FIELDS TERMINATED BY ',' ENCLOSED BY '"'
             LINES TERMINATED BY '\n'
