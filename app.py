@@ -7,10 +7,20 @@ import os
 st.set_page_config(page_title="Subida CSV ABI", layout="centered")
 st.title("Subida de CSV")
 
-uploaded_file = st.file_uploader("Subí tu archivo CSV", type=["csv", "xlsx"])
+# Ocultar texto original del uploader y mostrar texto personalizado
+st.markdown("""
+    <style>
+    div[data-testid="stFileUploader"] > label > div:first-child {
+        display: none;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+st.markdown("### Subí tu archivo CSV o Excel (máximo 200MB):")
+uploaded_file = st.file_uploader("", type=["csv", "xlsx"], label_visibility="collapsed")
 
 if uploaded_file:
-    # Leer archivo
+    # Procesar el archivo correctamente
     if uploaded_file.name.endswith(".csv"):
         df = pd.read_csv(uploaded_file)
     elif uploaded_file.name.endswith(".xlsx"):
@@ -29,12 +39,10 @@ if uploaded_file:
 
     if st.button("Confirmar Subida"):
         try:
-            # Guardar archivo temporal
             temp_csv = tempfile.NamedTemporaryFile(delete=False, suffix=".csv", mode='w', encoding='utf-8')
             df.to_csv(temp_csv.name, index=False)
             temp_csv.close()
 
-            # Conexión
             conn = mysql.connector.connect(
                 host=st.secrets["DB_HOST"],
                 user=st.secrets["DB_USER"],
@@ -44,10 +52,8 @@ if uploaded_file:
             )
             cursor = conn.cursor()
 
-            # TRUNCATE tabla destino
             cursor.execute("TRUNCATE TABLE test_infile_abi")
 
-            # Cargar CSV con LOAD DATA
             load_query = f"""
             LOAD DATA LOCAL INFILE '{temp_csv.name.replace('\\\\', '\\\\')}'
             INTO TABLE test_infile_abi
@@ -56,8 +62,6 @@ if uploaded_file:
             IGNORE 1 ROWS;
             """
             cursor.execute(load_query)
-
-            # Ejecutar SP
             cursor.execute("CALL update_ep()")
 
             conn.commit()
@@ -66,6 +70,5 @@ if uploaded_file:
             os.remove(temp_csv.name)
 
             st.success("Archivo subido, tabla actualizada y procedimiento ejecutado.")
-
         except Exception as e:
             st.error(f"Error: {e}")
