@@ -24,9 +24,11 @@ logo_b64 = get_base64_logo()
 # Estilos personalizados
 st.markdown("""
     <style>
+    .main {
+        background-color: #d4fdb7 !important;
+    }
     .main > div:first-child {
         padding-top: 0rem;
-        background-color: #d4fdb7;
     }
     .header-container {
         display: flex;
@@ -58,15 +60,9 @@ st.markdown("""
         background-color: #f6fff0;
         color: #64352c !important;
         font-weight: bold;
-        border-left: none;
     }
     label, .stSelectbox label, .stFileUploader label {
         color: #64352c !important;
-    }
-    .custom-info {
-        margin-bottom: 1.5rem;
-        color: #64352c;
-        font-weight: bold;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -105,11 +101,9 @@ if uploaded_file:
     if numeric_cols:
         selected_col = st.selectbox("Seleccioná una columna para ver la suma:", numeric_cols)
         suma = df[selected_col].sum()
-        st.markdown(f"<div class='custom-info'>Suma de la columna <strong>{selected_col}</strong>: <strong>{suma:.2f}</strong></div>", unsafe_allow_html=True)
+        st.markdown(f"<div style='color: #64352c; font-weight: bold; margin-bottom: 20px;'>Suma de la columna <strong>{selected_col}</strong>: <strong>{suma:.2f}</strong></div>", unsafe_allow_html=True)
     else:
         st.warning("No hay columnas numéricas.")
-
-    st.markdown("<div style='margin-top: 1rem;'></div>", unsafe_allow_html=True)
 
     if st.button("Confirmar Subida"):
         try:
