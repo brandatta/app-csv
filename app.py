@@ -22,14 +22,14 @@ def get_base64_logo(path="logorelleno.png"):
 
 logo_b64 = get_base64_logo()
 
-# Estilos
+# Estilos con margen superior reducido
 st.markdown("""
     <style>
     .header-container {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 4px 0;
+        padding: 4px 0 12px 0;  /* margen superior reducido */
         border-bottom: 1px solid #e6e6e6;
         margin-bottom: 20px;
     }
@@ -44,7 +44,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Encabezado con título a la izquierda y logo a la derecha
+# Encabezado con logo a la derecha
 if logo_b64:
     st.markdown(f"""
     <div class="header-container">
@@ -61,7 +61,7 @@ else:
     </div>
     """, unsafe_allow_html=True)
 
-# ---- Lógica principal ----
+# -------------------- LÓGICA PRINCIPAL --------------------
 
 uploaded_file = st.file_uploader("Subí tu archivo CSV", type=["csv", "xlsx"])
 
