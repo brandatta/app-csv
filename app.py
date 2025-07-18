@@ -7,10 +7,53 @@ import os
 st.set_page_config(page_title="Subida CSV ABI", layout="centered")
 st.title("Subida de CSV")
 
-# Subí tu archivo con texto en español
-st.markdown("## Subí tu archivo CSV o Excel (máximo 200MB):")
+# HTML personalizado con botón en español
+st.markdown("""
+<style>
+#custom-uploader {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-bottom: 1rem;
+}
+#file-label {
+    background-color: #2185d0;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+#file-label:hover {
+    background-color: #1678c2;
+}
+#file-input {
+    display: none;
+}
+</style>
 
-# Subida de archivo
+<div id="custom-uploader">
+    <label id="file-label" for="file-input">Elegir archivo</label>
+    <input type="file" id="file-input" accept=".csv, .xlsx" />
+</div>
+
+<script>
+const fileInput = window.parent.document.querySelector('input[type=file]');
+const customInput = window.parent.document.getElementById('file-input');
+if (fileInput && customInput) {
+    customInput.addEventListener('change', () => {
+        const file = customInput.files[0];
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        fileInput.files = dataTransfer.files;
+        const event = new Event('change', { bubbles: true });
+        fileInput.dispatchEvent(event);
+    });
+}
+</script>
+""", unsafe_allow_html=True)
+
+# Subida real de archivo oculta (pero funcional)
 uploaded_file = st.file_uploader("", type=["csv", "xlsx"], label_visibility="collapsed")
 
 if uploaded_file:
