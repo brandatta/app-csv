@@ -98,9 +98,15 @@ if uploaded_file:
     if numeric_cols:
         selected_col = st.selectbox("Seleccioná una columna para ver la suma:", numeric_cols)
         suma = df[selected_col].sum()
-        st.markdown(f"<div class='stAlert' data-baseweb='alert'>Suma de la columna <strong>{selected_col}</strong>: <strong>{suma:.2f}</strong></div>", unsafe_allow_html=True)
+        st.markdown(f"""
+        <div style='color:#64352c; font-weight:bold; margin: 20px 0;'>
+            Suma de la columna <strong>{selected_col}</strong>: <strong>{suma:.2f}</strong>
+        </div>
+        """, unsafe_allow_html=True)
     else:
         st.warning("No hay columnas numéricas.")
+
+    st.markdown("<div style='margin-bottom: 20px;'></div>", unsafe_allow_html=True)
 
     if st.button("Confirmar Subida"):
         try:
@@ -132,12 +138,6 @@ if uploaded_file:
             conn.commit()
             cursor.close()
             conn.close()
-            os.remove(temp_csv.name)
-
-            st.success("Archivo subido, tabla actualizada y procedimiento ejecutado.")
-
-        except Exception as e:
-            st.error(f"Error: {e}")
             os.remove(temp_csv.name)
 
             st.success("Archivo subido, tabla actualizada y procedimiento ejecutado.")
