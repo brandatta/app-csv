@@ -29,7 +29,7 @@ st.markdown("""
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 12px 0;
+        padding: 4px 0;
         border-bottom: 1px solid #e6e6e6;
         margin-bottom: 20px;
     }
