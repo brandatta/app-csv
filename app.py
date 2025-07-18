@@ -39,28 +39,23 @@ st.markdown("""
         font-size: 24px;
         font-weight: bold;
         color: #d4fdb7;
+        text-shadow: -1px -1px 0 #64352c, 1px -1px 0 #64352c, -1px 1px 0 #64352c, 1px 1px 0 #64352c;
     }
     .header-logo img {
         height: 40px;
     }
     button[kind="primary"] {
-        background-color: #64352c !important;
-        border-color: #64352c !important;
-        color: white !important;
+        background-color: #d4fdb7 !important;
+        border-color: #d4fdb7 !important;
+        color: black !important;
     }
     button[kind="primary"]:hover {
-        background-color: #87584d !important;
-        border-color: #87584d !important;
-        color: white !important;
+        background-color: #c1e6a8 !important;
+        border-color: #c1e6a8 !important;
     }
     .stAlert[data-baseweb="alert"] {
-        border-left: 6px solid #64352c;
-        background-color: #f9f3f1;
-        color: black;
-    }
-    .stSelectbox label, .stFileUploader label {
-        color: #64352c;
-        font-weight: bold;
+        border-left: 6px solid #d4fdb7;
+        background-color: #f6fff0;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -124,7 +119,7 @@ if uploaded_file:
             LOAD DATA LOCAL INFILE '{temp_csv.name.replace('\\\\', '\\\\')}'
             INTO TABLE test_infile_abi
             FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-            LINES TERMINATED BY '\\n'
+            LINES TERMINATED BY '\n'
             IGNORE 1 ROWS;
             """
             cursor.execute(load_query)
