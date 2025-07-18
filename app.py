@@ -23,11 +23,11 @@ if uploaded_file:
     if numeric_cols:
         selected_col = st.selectbox("Seleccioná una columna para ver la suma:", numeric_cols)
         suma = df[selected_col].sum()
-        st.info(f"\ud83d\udcca Suma de la columna **{selected_col}**: **{suma:.2f}**")
+        st.info(f"Suma de la columna **{selected_col}**: **{suma:.2f}**")
     else:
-        st.warning("\u26a0\ufe0f No hay columnas numéricas.")
+        st.warning("No hay columnas numéricas.")
 
-    if st.button("\u2705 Confirmar Subida"):
+    if st.button("Confirmar Subida"):
         try:
             # Guardar archivo temporal
             temp_csv = tempfile.NamedTemporaryFile(delete=False, suffix=".csv", mode='w', encoding='utf-8')
@@ -52,7 +52,7 @@ if uploaded_file:
             LOAD DATA LOCAL INFILE '{temp_csv.name.replace('\\\\', '\\\\')}'
             INTO TABLE test_infile_abi
             FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-            LINES TERMINATED BY '\n'
+            LINES TERMINATED BY '\\n'
             IGNORE 1 ROWS;
             """
             cursor.execute(load_query)
@@ -65,7 +65,8 @@ if uploaded_file:
             conn.close()
             os.remove(temp_csv.name)
 
-            st.success("\u2705 Archivo subido, tabla actualizada y procedimiento ejecutado.")
+            st.success("Archivo subido, tabla actualizada y procedimiento ejecutado.")
 
         except Exception as e:
-            st.error(f"\u274c Error: {e}")
+            st.error(f"Error: {e}")
+
