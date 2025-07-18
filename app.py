@@ -21,10 +21,9 @@ def get_base64_logo(path="logorelleno.png"):
 
 logo_b64 = get_base64_logo()
 
-# Estilos: margen superior casi nulo
+# Estilos personalizados
 st.markdown("""
     <style>
-    /* Quitar margen general de la app */
     .main > div:first-child {
         padding-top: 0rem;
     }
@@ -32,17 +31,31 @@ st.markdown("""
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 2px 0 10px 0;  /* margen superior casi nulo */
-        border-bottom: 1px solid #e6e6e6;
-        margin-bottom: 16px;
+        padding: 2px 0 10px 0;
+        border-bottom: 2px solid #6AB04C;
+        margin-bottom: 20px;
     }
     .header-title {
-        font-size: 22px;
-        font-weight: 600;
-        color: #31333F;
+        font-size: 24px;
+        font-weight: bold;
+        color: #6AB04C;
     }
     .header-logo img {
-        height: 36px;
+        height: 40px;
+    }
+    /* Botón principal en verde */
+    button[kind="primary"] {
+        background-color: #6AB04C !important;
+        border-color: #6AB04C !important;
+    }
+    button[kind="primary"]:hover {
+        background-color: #5CA23F !important;
+        border-color: #5CA23F !important;
+    }
+    /* Info box en verde */
+    .stAlert[data-baseweb="alert"] {
+        border-left: 6px solid #6AB04C;
+        background-color: #f6fff4;
     }
     </style>
 """, unsafe_allow_html=True)
