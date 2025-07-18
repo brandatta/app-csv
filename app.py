@@ -7,32 +7,11 @@ import os
 st.set_page_config(page_title="Subida CSV ABI", layout="centered")
 st.title("Subida de CSV")
 
-# Ocultar texto por defecto en inglés y personalizar botón
-st.markdown("""
-    <style>
-    div[data-testid="stFileUploader"] > label > div {
-        display: none;
-    }
-    button[title="Browse files"]::after {
-        content: "Elegir archivo";
-        position: absolute;
-        left: 0;
-        right: 0;
-        text-align: center;
-        color: black;
-    }
-    button[title="Browse files"] > svg {
-        display: none;
-    }
-    button[title="Browse files"] > div {
-        visibility: hidden;
-    }
-    </style>
-""", unsafe_allow_html=True)
+# Subí tu archivo con texto en español
+st.markdown("## Subí tu archivo CSV o Excel (máximo 200MB):")
 
-# Texto personalizado arriba del uploader
-st.markdown("Subí tu archivo CSV o Excel (máximo 200MB):")
-uploaded_file = st.file_uploader("", type=["csv", "xlsx"])
+# Subida de archivo
+uploaded_file = st.file_uploader("", type=["csv", "xlsx"], label_visibility="collapsed")
 
 if uploaded_file:
     # Leer archivo
@@ -94,4 +73,3 @@ if uploaded_file:
 
         except Exception as e:
             st.error(f"Error: {e}")
-
