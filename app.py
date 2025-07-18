@@ -4,22 +4,66 @@ import mysql.connector
 import tempfile
 import os
 from PIL import Image
+import base64
+import io
 
+# Configurar página
 st.set_page_config(page_title="Subida CSV ABI", layout="centered")
 
-# Mostrar logo en margen izquierdo
-try:
-    image = Image.open("logorelleno.png")
-    st.sidebar.image(image, use_column_width=True)
-except Exception as e:
-    st.sidebar.warning("No se pudo cargar el logo.")
+# Convertir logo a base64 para incrustarlo en HTML
+def get_base64_logo(path="logorelleno.png"):
+    try:
+        img = Image.open(path).resize((40, 40))
+        buffer = io.BytesIO()
+        img.save(buffer, format="PNG")
+        return base64.b64encode(buffer.getvalue()).decode()
+    except Exception as e:
+        return None
 
-st.title("Subida de CSV")
+logo_b64 = get_base64_logo()
+
+# Estilo del header
+st.markdown("""
+    <style>
+    .header-container {
+        display: flex;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid #e6e6e6;
+        margin-bottom: 20px;
+    }
+    .header-container img {
+        height: 40px;
+        margin-right: 15px;
+    }
+    .header-title {
+        font-size: 24px;
+        font-weight: 600;
+        color: #31333F;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# Renderizar encabezado con logo y título
+if logo_b64:
+    st.markdown(f"""
+    <div class="header-container">
+        <img src="data:image/png;base64,{logo_b64}" />
+        <div class="header-title">Subida de CSV</div>
+    </div>
+    """, unsafe_allow_html=True)
+else:
+    st.markdown(f"""
+    <div class="header-container">
+        <div class="header-title">Subida de CSV</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+# ---------------- LÓGICA PRINCIPAL ----------------
 
 uploaded_file = st.file_uploader("Subí tu archivo CSV", type=["csv", "xlsx"])
 
 if uploaded_file:
-    # Leer archivo
     if uploaded_file.name.endswith(".csv"):
         df = pd.read_csv(uploaded_file)
     elif uploaded_file.name.endswith(".xlsx"):
@@ -38,12 +82,10 @@ if uploaded_file:
 
     if st.button("Confirmar Subida"):
         try:
-            # Guardar archivo temporal
             temp_csv = tempfile.NamedTemporaryFile(delete=False, suffix=".csv", mode='w', encoding='utf-8')
             df.to_csv(temp_csv.name, index=False)
             temp_csv.close()
 
-            # Conexión
             conn = mysql.connector.connect(
                 host=st.secrets["DB_HOST"],
                 user=st.secrets["DB_USER"],
@@ -53,10 +95,8 @@ if uploaded_file:
             )
             cursor = conn.cursor()
 
-            # TRUNCATE tabla destino
             cursor.execute("TRUNCATE TABLE test_infile_abi")
 
-            # Cargar CSV con LOAD DATA
             load_query = f"""
             LOAD DATA LOCAL INFILE '{temp_csv.name.replace('\\\\', '\\\\')}'
             INTO TABLE test_infile_abi
@@ -65,8 +105,6 @@ if uploaded_file:
             IGNORE 1 ROWS;
             """
             cursor.execute(load_query)
-
-            # Ejecutar SP
             cursor.execute("CALL update_ep()")
 
             conn.commit()
