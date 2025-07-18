@@ -39,7 +39,11 @@ st.markdown("""
         font-size: 24px;
         font-weight: bold;
         color: #d4fdb7;
-        text-shadow: -1px -1px 0 #64352c, 1px -1px 0 #64352c, -1px 1px 0 #64352c, 1px 1px 0 #64352c;
+        text-shadow:
+            -2px -2px 0 #64352c,
+             2px -2px 0 #64352c,
+            -2px  2px 0 #64352c,
+             2px  2px 0 #64352c;
     }
     .header-logo img {
         height: 40px;
@@ -48,6 +52,11 @@ st.markdown("""
         background-color: #d4fdb7 !important;
         border-color: #d4fdb7 !important;
         color: black !important;
+        text-shadow:
+            -1px -1px 0 #64352c,
+             1px -1px 0 #64352c,
+            -1px  1px 0 #64352c,
+             1px  1px 0 #64352c;
     }
     button[kind="primary"]:hover {
         background-color: #c1e6a8 !important;
@@ -56,6 +65,12 @@ st.markdown("""
     .stAlert[data-baseweb="alert"] {
         border-left: 6px solid #d4fdb7;
         background-color: #f6fff0;
+        color: black;
+        text-shadow:
+            -1px -1px 0 #64352c,
+             1px -1px 0 #64352c,
+            -1px  1px 0 #64352c,
+             1px  1px 0 #64352c;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -116,7 +131,7 @@ if uploaded_file:
             cursor.execute("TRUNCATE TABLE test_infile_abi")
 
             load_query = f"""
-            LOAD DATA LOCAL INFILE '{temp_csv.name.replace('\\\\', '\\\\')}'
+            LOAD DATA LOCAL INFILE '{temp_csv.name.replace('\\', '\\')}'
             INTO TABLE test_infile_abi
             FIELDS TERMINATED BY ',' ENCLOSED BY '"'
             LINES TERMINATED BY '\n'
