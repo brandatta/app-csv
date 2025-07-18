@@ -10,56 +10,58 @@ import io
 # Configurar página
 st.set_page_config(page_title="Subida CSV ABI", layout="centered")
 
-# Convertir logo a base64 para incrustarlo en HTML
+# Convertir logo a base64
 def get_base64_logo(path="logorelleno.png"):
     try:
         img = Image.open(path).resize((40, 40))
         buffer = io.BytesIO()
         img.save(buffer, format="PNG")
         return base64.b64encode(buffer.getvalue()).decode()
-    except Exception as e:
+    except Exception:
         return None
 
 logo_b64 = get_base64_logo()
 
-# Estilo del header
+# Estilos
 st.markdown("""
     <style>
     .header-container {
         display: flex;
+        justify-content: space-between;
         align-items: center;
         padding: 12px 0;
         border-bottom: 1px solid #e6e6e6;
         margin-bottom: 20px;
-    }
-    .header-container img {
-        height: 40px;
-        margin-right: 15px;
     }
     .header-title {
         font-size: 24px;
         font-weight: 600;
         color: #31333F;
     }
+    .header-logo img {
+        height: 40px;
+    }
     </style>
 """, unsafe_allow_html=True)
 
-# Renderizar encabezado con logo y título
+# Encabezado con título a la izquierda y logo a la derecha
 if logo_b64:
     st.markdown(f"""
     <div class="header-container">
-        <img src="data:image/png;base64,{logo_b64}" />
         <div class="header-title">Subida de CSV</div>
+        <div class="header-logo">
+            <img src="data:image/png;base64,{logo_b64}" />
+        </div>
     </div>
     """, unsafe_allow_html=True)
 else:
-    st.markdown(f"""
+    st.markdown("""
     <div class="header-container">
         <div class="header-title">Subida de CSV</div>
     </div>
     """, unsafe_allow_html=True)
 
-# ---------------- LÓGICA PRINCIPAL ----------------
+# ---- Lógica principal ----
 
 uploaded_file = st.file_uploader("Subí tu archivo CSV", type=["csv", "xlsx"])
 
