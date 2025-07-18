@@ -7,7 +7,6 @@ from PIL import Image
 import base64
 import io
 
-# Configurar página
 st.set_page_config(page_title="Subida CSV ABI", layout="centered")
 
 # Convertir logo a base64
@@ -22,29 +21,33 @@ def get_base64_logo(path="logorelleno.png"):
 
 logo_b64 = get_base64_logo()
 
-# Estilos con margen superior reducido
+# Estilos: margen superior casi nulo
 st.markdown("""
     <style>
+    /* Quitar margen general de la app */
+    .main > div:first-child {
+        padding-top: 0rem;
+    }
     .header-container {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 4px 0 12px 0;  /* margen superior reducido */
+        padding: 2px 0 10px 0;  /* margen superior casi nulo */
         border-bottom: 1px solid #e6e6e6;
-        margin-bottom: 20px;
+        margin-bottom: 16px;
     }
     .header-title {
-        font-size: 24px;
+        font-size: 22px;
         font-weight: 600;
         color: #31333F;
     }
     .header-logo img {
-        height: 40px;
+        height: 36px;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# Encabezado con logo a la derecha
+# Header
 if logo_b64:
     st.markdown(f"""
     <div class="header-container">
