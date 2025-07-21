@@ -122,11 +122,13 @@ if uploaded_file:
 
             cursor.execute("TRUNCATE TABLE test_infile_abi")
 
+            # ✅ Aquí corregimos el uso del backslash en el f-string
+            csv_path = temp_csv.name.replace("\\", "\\\\")
             load_query = f"""
-            LOAD DATA LOCAL INFILE '{temp_csv.name.replace('\\\\', '\\\\')}'
+            LOAD DATA LOCAL INFILE '{csv_path}'
             INTO TABLE test_infile_abi
             FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-            LINES TERMINATED BY '\n'
+            LINES TERMINATED BY '\\n'
             IGNORE 1 ROWS;
             """
             cursor.execute(load_query)
